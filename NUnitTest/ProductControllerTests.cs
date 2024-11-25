@@ -22,9 +22,12 @@ namespace NUnitTest
 
             _context = new OdontologicDbContext(options);
             _controller = new ProductController(_context); 
+            
+            _context.Database.EnsureDeleted();
+            _context.Database.EnsureCreated();
         }
         
-        //Cleans DB after each test
+        //Cleans context after each test
         [TearDown]
         public void TearDown()
         {
@@ -89,6 +92,98 @@ namespace NUnitTest
             
             //notFoundResult.Value is the response body
             Assert.That(notFoundResult.Value, Is.EqualTo("Product not found"));
+        }
+        
+        //Made together
+        [Test]
+        public async Task GetProduct_ByLabel_ReturnsProducts()
+        {
+            var label1 = new Label { Name = "tilbud" };
+            var label2 = new Label { Name = "tøj" };
+            
+            var product1 = new Product
+            {
+                Id = 1,
+                Title = "Sample Product",
+                Description = "Sample Product",
+                ImageUrl = "www.Sample-Product.fr",
+                Price = 10,
+                Labels = new List<Label> {label1},
+                Stocks = []
+            };
+            
+            var product2 = new Product
+            {
+                Id = 2,
+                Title = "Sample Product",
+                Description = "Sample Product",
+                ImageUrl = "www.Sample-Product.fr",
+                Price = 10,
+                Labels = new List<Label> {label2},
+                Stocks = []
+            };
+            
+            _context.Labels.Add(label1);
+            _context.Labels.Add(label2);
+            _context.Products.Add(product1);
+            _context.Products.Add(product2);
+            await _context.SaveChangesAsync();
+            
+            // Act
+            var result = await _controller.GetProductsByLabel("tilbud");
+            
+            Assert.That(result.Value, Is.Not.Null);
+            Assert.That(result.Value.Count, Is.EqualTo(1));
+            
+            Assert.That(result, Is.InstanceOf<ActionResult<IEnumerable<Product>>>());
+
+            var returnedProduct = result.Value.FirstOrDefault();
+            Assert.That(returnedProduct, Is.Not.Null);
+            Assert.That(returnedProduct.Id, Is.EqualTo(product1.Id));
+            Assert.That(returnedProduct.Labels, Is.EquivalentTo(product1.Labels));
+            
+
+        }
+        
+        //Made together
+        //Continue on this
+        [Test]
+        public async Task GetProduct_ByLabel_ReturnsNotFound()
+        {
+            var label1 = new Label { Name = "tilbud" };
+            var label2 = new Label { Name = "tøj" };
+            
+            var product1 = new Product
+            {
+                Id = 1,
+                Title = "Sample Product",
+                Description = "Sample Product",
+                ImageUrl = "www.Sample-Product.fr",
+                Price = 10,
+                Labels = new List<Label> {label1},
+                Stocks = []
+            };
+            
+            
+            _context.Labels.Add(label1);
+            _context.Labels.Add(label2);
+            _context.Products.Add(product1);
+            await _context.SaveChangesAsync();
+            
+            // Act
+            var result = await _controller.GetProductsByLabel("tøj");
+            
+            Assert.That(result.Value, Is.Not.Null);
+            Assert.That(result.Value.Count, Is.EqualTo(0));
+            
+            Assert.That(result, Is.InstanceOf<ActionResult<IEnumerable<Product>>>());
+
+            var returnedProduct = result.Value.FirstOrDefault();
+            Assert.That(returnedProduct, Is.Not.Null);
+            Assert.That(returnedProduct.Id, Is.EqualTo(product1.Id));
+            Assert.That(returnedProduct.Labels, Is.EquivalentTo(product1.Labels));
+            
+
         }
         
     }
