@@ -45,12 +45,16 @@ public class ProductController : ControllerBase
 
         if (labelEntity == null)
         {
-            return NotFound($"Label '{label}' not found.");
+            return NotFound($"Label '{label}' not found");
         }
-        
+
         var products = await _context.Products
             .Where(p => p.Labels.Any(l => l.Name == label))
             .ToListAsync();
+        if (products.Count == 0)
+        {
+            return NotFound($"Product not found with '{label}'");
+        }
 
         return products;
     }
