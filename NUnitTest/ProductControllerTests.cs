@@ -1,7 +1,11 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BE_Hovedopgave_2024_2025.Model;
 using BE_Hovedopgave_2024_2025.Controllers;
+using BE_Hovedopgave_2024_2025.DTOs;
+using BE_Hovedopgave_2024_2025.Profiles;
+using BE_Hovedopgave_2024_2025.Services;
 
 //Setup and teardown are made together
 namespace NUnitTest
@@ -11,6 +15,8 @@ namespace NUnitTest
     {
         private OdontologicDbContext _context;
         private ProductController _controller;
+        private IProductService _service;
+        private IMapper _mapper;
 
         [SetUp]
         public void Setup()
@@ -20,8 +26,19 @@ namespace NUnitTest
                 .UseInMemoryDatabase(databaseName: "TestDatabase") 
                 .Options;
 
+            var mapperConfig = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<MappingProfile>();
+
+            });
+            
+            _mapper = mapperConfig.CreateMapper();
+
+            _service = new ProductService(_mapper, _context);
+
             _context = new OdontologicDbContext(options);
-            _controller = new ProductController(_context); 
+            
+            _controller = new ProductController(_context, _service); 
             
             _context.Database.EnsureDeleted();
             _context.Database.EnsureCreated();
@@ -31,7 +48,7 @@ namespace NUnitTest
         [TearDown]
         public void TearDown()
         {
-            _context?.Dispose();
+           _context?.Dispose();
         }
 
         //Made together
@@ -59,14 +76,15 @@ namespace NUnitTest
 
             // Assert
             //Checks that the result is an action result with a Product
-            Assert.That(result, Is.InstanceOf<ActionResult<Product>>());
+            Assert.That(result, Is.InstanceOf<ActionResult<ProductDTO>>());
             
             // Checks that the value inside the ActionResult is of type Product
             // result.Value is the actual data returned (Product)
-            Assert.That(result.Value, Is.TypeOf<Product>());
+            Assert.That(result.Value, Is.TypeOf<ProductDTO>());
             
             // Checks that the returned product is the same as the one added to the database
-            Assert.That(product, Is.EqualTo(result.Value));
+            Assert.That(product.Id, Is.EqualTo(result.Value.Id));
+            Assert.That(product.Title, Is.EqualTo(result.Value.Title));
         }
         
         //Made together
@@ -82,7 +100,7 @@ namespace NUnitTest
 
             // Assert
             //Checks that the result is an action result with a Product
-            Assert.That(result, Is.InstanceOf<ActionResult<Product>>());
+            Assert.That(result, Is.InstanceOf<ActionResult<ProductDTO>>());
             
             // Checks that the result.Result is an instance of NotFoundObjectResult
             Assert.That(result.Result, Is.InstanceOf<NotFoundObjectResult>());

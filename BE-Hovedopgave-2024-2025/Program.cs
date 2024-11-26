@@ -1,4 +1,5 @@
 using BE_Hovedopgave_2024_2025.Model;
+using BE_Hovedopgave_2024_2025.Services;
 using DotNetEnv;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,13 +12,13 @@ if (string.IsNullOrEmpty(connectionString))
 {
     throw new InvalidOperationException("Connection string is missing or empty. Please set the connection string in the environment variables.");
 }
-    
-
+   
 // Add services to the container.
+builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddDbContext<OdontologicDbContext>(options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

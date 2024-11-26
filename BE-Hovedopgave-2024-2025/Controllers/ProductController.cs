@@ -1,4 +1,6 @@
+using BE_Hovedopgave_2024_2025.DTOs;
 using BE_Hovedopgave_2024_2025.Model;
+using BE_Hovedopgave_2024_2025.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,11 +12,15 @@ namespace BE_Hovedopgave_2024_2025.Controllers;
 public class ProductController : ControllerBase
 {
     private readonly OdontologicDbContext _context;
+    
+    private readonly IProductService _productService;
 
-    public ProductController(OdontologicDbContext context)
+    public ProductController(OdontologicDbContext context, IProductService productService)
     {
         _context = context;
+        _productService = productService;
     }
+    
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
@@ -24,7 +30,20 @@ public class ProductController : ControllerBase
     
     //Make sure the parameter type is int
     [HttpGet("{id:int}")]
-    public async Task<ActionResult<Product>> GetProduct(int id)
+    public async Task<ActionResult<ProductDTO>> GetProduct(int id)
+    {
+        var product = await _productService.GetProductByIdAsync(id);
+
+        if (product == null)
+        {
+            return NotFound();
+        }
+        
+        var productDto = _productService.GetProductDto(product);
+
+        return productDto;
+    } 
+    /*public async Task<ActionResult<Product>> GetProduct(int id)
     {
         var product = await _context.Products.FindAsync(id);
 
@@ -34,7 +53,9 @@ public class ProductController : ControllerBase
         }
         
         return product;
-    }
+    }*/
+    
+    
 
     [HttpGet("{label}")]
     public async Task<ActionResult<IEnumerable<Product>>> GetProductsByLabel(string label)
