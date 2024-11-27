@@ -30,12 +30,11 @@ public class ProductService : IProductService
         return StockStatus.InStock;
     }
 
-    public async Task<Product> GetProductByIdAsync(int id)
+    public async Task<Product?> GetProductByIdAsync(int id)
     {
-        var product = await _context.Products.FindAsync(id);
-        //var result = product == null ? null : product;  
+        var result = await _context.Products.FindAsync(id);
         
-        return product;
+        return result;
     }
 
     public ProductDTO GetProductDto(Product product)

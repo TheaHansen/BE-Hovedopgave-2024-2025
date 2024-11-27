@@ -11,27 +11,22 @@ namespace BE_Hovedopgave_2024_2025.Controllers;
 [ApiController]
 public class ProductController : ControllerBase
 {
-    //private readonly OdontologicDbContext _context;
+    private readonly OdontologicDbContext _context;
     
     private readonly IProductService _productService;
 
-    /*public ProductController(OdontologicDbContext context, IProductService productService)
+    public ProductController(OdontologicDbContext context, IProductService productService)
     {
         _context = context;
-        _productService = productService;
-    }*/
-    
-    public ProductController(IProductService productService)
-    {
         _productService = productService;
     }
     
 
-    /*[HttpGet]
+    [HttpGet]
     public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
     {
         return await _context.Products.ToListAsync();
-    }*/
+    }
     
     //Make sure the parameter type is int
     [HttpGet("{id:int}")]
@@ -41,16 +36,28 @@ public class ProductController : ControllerBase
 
         if (product == null)
         {
-            return NotFound("Product not found");
+            return NotFound();
         }
         
         var productDto = _productService.GetProductDto(product);
 
         return productDto;
     } 
+    /*public async Task<ActionResult<Product>> GetProduct(int id)
+    {
+        var product = await _context.Products.FindAsync(id);
+
+        if (product == null)
+        {
+            return NotFound("Product not found");
+        }
+        
+        return product;
+    }*/
+    
     
 
-    /*[HttpGet("{label}")]
+    [HttpGet("{label}")]
     public async Task<ActionResult<IEnumerable<Product>>> GetProductsByLabel(string label)
     {
         //To see if label exists
@@ -71,5 +78,5 @@ public class ProductController : ControllerBase
         }
 
         return products;
-    }*/
+    }
 }
