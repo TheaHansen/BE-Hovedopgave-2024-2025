@@ -29,7 +29,7 @@ public class ProductService : IProductService
         return StockStatus.InStock;
     }
     
-    public ProductDTO GetProductDto(Product product)
+    public ProductDTO ConvertToProductDTO(Product product)
     {
         
         var stockStatus = GetStockStatus(product.Stocks);
@@ -41,7 +41,7 @@ public class ProductService : IProductService
         return productDTO;
     }
 
-    public async Task<List<ProductDTO>> GetAllProducts()
+    public async Task<List<ProductDTO>> GetAllProductDTOs()
     {
         var products = await _context.Products
             .Include(p => p.Stocks)
@@ -51,7 +51,7 @@ public class ProductService : IProductService
 
         foreach (var product in products)
         {
-            var productDTO = GetProductDto(product);
+            var productDTO = ConvertToProductDTO(product);
             productDTOs.Add(productDTO);
         }
         
@@ -67,5 +67,22 @@ public class ProductService : IProductService
         return result;
     }
 
-    
+    public async Task<List<ProductDTO?>> GetProductDTOsByLabel(string label)
+    {
+        var products = await _context.Products
+            .Include(p => p.Stocks)
+            .Where(p => p.Labels.Any(l => l.Name == label))
+            .ToListAsync();
+        
+        var productDTOs = new List<ProductDTO>();
+        
+        foreach (var product in products)
+        {
+            var productDTO = ConvertToProductDTO(product);
+            productDTOs.Add(productDTO);
+        }
+        
+        return productDTOs;
+    }
+
 }

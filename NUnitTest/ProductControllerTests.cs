@@ -15,7 +15,8 @@ namespace NUnitTest
     {
         private OdontologicDbContext _context;
         private ProductController _controller;
-        private IProductService _service;
+        private IProductService _productService;
+        private ILabelService _labelService;
         private IMapper _mapper;
 
         [SetUp]
@@ -36,9 +37,11 @@ namespace NUnitTest
             
             _mapper = mapperConfig.CreateMapper();
 
-            _service = new ProductService(_mapper, _context);
+            _productService = new ProductService(_mapper, _context);
             
-            _controller = new ProductController(_service); 
+            _labelService = new LabelService(_context);
+            
+            _controller = new ProductController(_productService, _labelService); 
             
             _context.Database.EnsureDeleted();
             _context.Database.EnsureCreated();
@@ -113,7 +116,7 @@ namespace NUnitTest
         }
         
         //Made together
-        /*[Test]
+        [Test]
         public async Task GetProduct_ByLabel_ReturnsProducts()
         {
             var label1 = new Label { Name = "tilbud" };
@@ -152,17 +155,18 @@ namespace NUnitTest
             
             Assert.That(result.Value, Is.Not.Null);
             Assert.That(result.Value.Count, Is.EqualTo(1));
-            Console.WriteLine(result.Value);
             
-            Assert.That(result, Is.InstanceOf<ActionResult<IEnumerable<Product>>>());
+            Assert.That(result, Is.InstanceOf<ActionResult<IEnumerable<ProductDTO>>>());
 
             var returnedProduct = result.Value.FirstOrDefault();
             Assert.That(returnedProduct, Is.Not.Null);
             Assert.That(returnedProduct.Id, Is.EqualTo(product1.Id));
-            Assert.That(returnedProduct.Labels, Is.EquivalentTo(product1.Labels));
+            Assert.That(returnedProduct.Labels[0].Id, Is.EqualTo(product1.Labels[0].Id));
+            Assert.That(returnedProduct.Labels[0].Name, Is.EqualTo(product1.Labels[0].Name));
             
 
         }
+        
         
         //Made together
         [Test]
@@ -193,7 +197,7 @@ namespace NUnitTest
             
             Assert.That(result.Value, Is.Null);
             
-            Assert.That(result, Is.InstanceOf<ActionResult<IEnumerable<Product>>>());
+            Assert.That(result, Is.InstanceOf<ActionResult<IEnumerable<ProductDTO>>>());
 
             // Checks that the result.Result is an instance of NotFoundObjectResult
             Assert.That(result.Result, Is.InstanceOf<NotFoundObjectResult>());
@@ -203,9 +207,9 @@ namespace NUnitTest
             
             //notFoundResult.Value is the response body
             Assert.That(notFoundResult.Value, Is.EqualTo($"Product not found with '{label2.Name}'"));
-            
 
         }
+        
         
         //Made together
         [Test]
@@ -234,7 +238,7 @@ namespace NUnitTest
             
             Assert.That(result.Value, Is.Null);
             
-            Assert.That(result, Is.InstanceOf<ActionResult<IEnumerable<Product>>>());
+            Assert.That(result, Is.InstanceOf<ActionResult<IEnumerable<ProductDTO>>>());
 
             // Checks that the result.Result is an instance of NotFoundObjectResult
             Assert.That(result.Result, Is.InstanceOf<NotFoundObjectResult>());
@@ -246,7 +250,7 @@ namespace NUnitTest
             Assert.That(notFoundResult.Value, Is.EqualTo($"Label '{labelNotFound}' not found"));
             
 
-        }*/
+        }
         
     }
 }

@@ -15,6 +15,7 @@ if (string.IsNullOrEmpty(connectionString))
    
 // Add services to the container.
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<ILabelService, LabelService>();
 builder.Services.AddDbContext<OdontologicDbContext>(options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

@@ -11,26 +11,21 @@ namespace BE_Hovedopgave_2024_2025.Controllers;
 [ApiController]
 public class ProductController : ControllerBase
 {
-    //private readonly OdontologicDbContext _context;
     
     private readonly IProductService _productService;
-
-    /*public ProductController(OdontologicDbContext context, IProductService productService)
-    {
-        _context = context;
-        _productService = productService;
-    }*/
+    private readonly ILabelService _labelService;
     
-    public ProductController(IProductService productService)
+    public ProductController(IProductService productService, ILabelService labelService)
     {
         _productService = productService;
+        _labelService = labelService;
     }
     
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProducts()
     {
-        return await _productService.GetAllProducts();
+        return await _productService.GetAllProductDTOs();
     }
     
     //Make sure the parameter type is int
@@ -44,32 +39,29 @@ public class ProductController : ControllerBase
             return NotFound("Product not found");
         }
         
-        var productDto = _productService.GetProductDto(product);
+        var productDto = _productService.ConvertToProductDTO(product);
 
         return productDto;
     } 
     
 
-    /*[HttpGet("{label}")]
-    public async Task<ActionResult<IEnumerable<Product>>> GetProductsByLabel(string label)
+    [HttpGet("{label}")]
+    public async Task<ActionResult<IEnumerable<ProductDTO?>>> GetProductsByLabel(string label)
     {
         //To see if label exists
-        var labelEntity = await _context.Labels
-            .FirstOrDefaultAsync(l => l.Name == label);
+        var labelEntity = await _labelService.GetLabelByNameAsync(label);
 
         if (labelEntity == null)
         {
             return NotFound($"Label '{label}' not found");
         }
 
-        var products = await _context.Products
-            .Where(p => p.Labels.Any(l => l.Name == label))
-            .ToListAsync();
-        if (products.Count == 0)
+        var productDTOs = await _productService.GetProductDTOsByLabel(label);
+        if (productDTOs.Count == 0)
         {
             return NotFound($"Product not found with '{label}'");
         }
 
-        return products;
-    }*/
+        return productDTOs;
+    }
 }
