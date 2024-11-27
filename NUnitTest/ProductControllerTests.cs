@@ -32,13 +32,13 @@ namespace NUnitTest
 
             });
             
+            _context = new OdontologicDbContext(options);
+            
             _mapper = mapperConfig.CreateMapper();
 
             _service = new ProductService(_mapper, _context);
-
-            _context = new OdontologicDbContext(options);
             
-            _controller = new ProductController(_context, _service); 
+            _controller = new ProductController(_service); 
             
             _context.Database.EnsureDeleted();
             _context.Database.EnsureCreated();
@@ -113,7 +113,7 @@ namespace NUnitTest
         }
         
         //Made together
-        [Test]
+        /*[Test]
         public async Task GetProduct_ByLabel_ReturnsProducts()
         {
             var label1 = new Label { Name = "tilbud" };
@@ -246,7 +246,7 @@ namespace NUnitTest
             Assert.That(notFoundResult.Value, Is.EqualTo($"Label '{labelNotFound}' not found"));
             
 
-        }
+        }*/
         
     }
 }

@@ -27,11 +27,11 @@ public class ProductController : ControllerBase
     }
     
 
-    /*[HttpGet]
-    public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProducts()
     {
-        return await _context.Products.ToListAsync();
-    }*/
+        return await _productService.GetAllProducts();
+    }
     
     //Make sure the parameter type is int
     [HttpGet("{id:int}")]
