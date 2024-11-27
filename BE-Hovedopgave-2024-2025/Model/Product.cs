@@ -7,6 +7,8 @@ public class Product
     public int Id { get; set; }
     [MaxLength(255)]
     public string Title { get; set; }
+    [MaxLength(41)]
+    public string? ShortDescription { get; set; }
     [MaxLength(255)]
     public string Description { get; set; }
     public decimal Price { get; set; }
