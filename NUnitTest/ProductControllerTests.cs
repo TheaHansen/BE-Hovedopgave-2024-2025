@@ -64,6 +64,7 @@ namespace NUnitTest
             {
                 Id = productId,
                 Title = "Sample Product",
+                ShortDescription = "Sample description",
                 Description = "Sample Product",
                 ImageUrl = "www.Sample-Product.fr",
                 Price = 10,
@@ -126,6 +127,7 @@ namespace NUnitTest
             {
                 Id = 1,
                 Title = "Sample Product",
+                ShortDescription = "Sample description",
                 Description = "Sample Product",
                 ImageUrl = "www.Sample-Product.fr",
                 Price = 10,
@@ -137,6 +139,7 @@ namespace NUnitTest
             {
                 Id = 2,
                 Title = "Sample Product",
+                ShortDescription = "Sample description",
                 Description = "Sample Product",
                 ImageUrl = "www.Sample-Product.fr",
                 Price = 10,
@@ -179,6 +182,7 @@ namespace NUnitTest
             {
                 Id = 1,
                 Title = "Sample Product",
+                ShortDescription = "Sample description",
                 Description = "Sample Product",
                 ImageUrl = "www.Sample-Product.fr",
                 Price = 10,
@@ -222,6 +226,7 @@ namespace NUnitTest
             {
                 Id = 1,
                 Title = "Sample Product",
+                ShortDescription = "Sample description",
                 Description = "Sample Product",
                 ImageUrl = "www.Sample-Product.fr",
                 Price = 10,
