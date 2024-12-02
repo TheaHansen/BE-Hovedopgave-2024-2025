@@ -321,8 +321,9 @@ namespace NUnitTest
             
         }
         
+        //Made by Thea
         [Test]
-        public async Task GetProduct_ByProduct_ReturnsProductNotFound()
+        public async Task GetProduct_ByCarousel_ReturnsProductNotFound()
         {
             
             var inCarousel = true;
