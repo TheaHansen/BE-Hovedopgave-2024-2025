@@ -85,4 +85,19 @@ public class ProductService : IProductService
         return productDTOs;
     }
 
+    public async Task<List<ProductDTO>> GetProductDTOsByCarousel(bool carousel)
+    {
+        var carouselProducts = await _context.Products.Include(p => p.Stocks).Where(product => product.InCarousel == carousel).ToListAsync();
+        
+        var productDTOs = new List<ProductDTO>();
+        
+        foreach (var product in carouselProducts)
+        {
+            var productDTO = ConvertToProductDTO(product);
+            productDTOs.Add(productDTO);
+        }
+        
+        return productDTOs;
+    }
+
 }

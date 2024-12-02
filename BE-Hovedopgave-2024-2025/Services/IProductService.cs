@@ -13,4 +13,6 @@ public interface IProductService
     public StockStatus GetStockStatus(List<Stock> stocks);
     
     public Task<List<ProductDTO?>> GetProductDTOsByLabel(string label);
+    
+    public Task<List<ProductDTO>> GetProductDTOsByCarousel(bool carousel);
 }
