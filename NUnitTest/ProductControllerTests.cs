@@ -63,10 +63,12 @@ namespace NUnitTest
             var product = new Product
             {
                 Id = productId,
+                ArticleNumber = "Article12",
                 Title = "Sample Product",
                 ShortDescription = "Sample description",
                 Description = "Sample Product",
                 ImageUrl = "www.Sample-Product.fr",
+                InCarousel = false,
                 Price = 10,
                 Labels = [],
                 Stocks = []
@@ -126,10 +128,12 @@ namespace NUnitTest
             var product1 = new Product
             {
                 Id = 1,
+                ArticleNumber = "Article12",
                 Title = "Sample Product",
                 ShortDescription = "Sample description",
                 Description = "Sample Product",
                 ImageUrl = "www.Sample-Product.fr",
+                InCarousel = false,
                 Price = 10,
                 Labels = new List<Label> {label1},
                 Stocks = []
@@ -138,10 +142,12 @@ namespace NUnitTest
             var product2 = new Product
             {
                 Id = 2,
+                ArticleNumber = "Article12",
                 Title = "Sample Product",
                 ShortDescription = "Sample description",
                 Description = "Sample Product",
                 ImageUrl = "www.Sample-Product.fr",
+                InCarousel = false,
                 Price = 10,
                 Labels = new List<Label> {label2},
                 Stocks = []
@@ -181,10 +187,12 @@ namespace NUnitTest
             var product1 = new Product
             {
                 Id = 1,
+                ArticleNumber = "Article12",
                 Title = "Sample Product",
                 ShortDescription = "Sample description",
                 Description = "Sample Product",
                 ImageUrl = "www.Sample-Product.fr",
+                InCarousel = false,
                 Price = 10,
                 Labels = new List<Label> {label1},
                 Stocks = []
@@ -225,10 +233,12 @@ namespace NUnitTest
             var product1 = new Product
             {
                 Id = 1,
+                ArticleNumber = "Article12",
                 Title = "Sample Product",
                 ShortDescription = "Sample description",
                 Description = "Sample Product",
                 ImageUrl = "www.Sample-Product.fr",
+                InCarousel = false,
                 Price = 10,
                 Labels = new List<Label> {label1},
                 Stocks = []
