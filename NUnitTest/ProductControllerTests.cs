@@ -267,5 +267,100 @@ namespace NUnitTest
 
         }
         
+        
+        //Made by Thea
+        [Test]
+        public async Task GetProduct_ByCarousel_ReturnsProducts()
+        {
+            
+            
+            var product1 = new Product
+            {
+                Id = 1,
+                ArticleNumber = "Article12",
+                Title = "Sample Product",
+                ShortDescription = "Sample description",
+                Description = "Sample Product",
+                ImageUrl = "www.Sample-Product.fr",
+                InCarousel = true,
+                Price = 10,
+                Labels = new List<Label> {},
+                Stocks = []
+            };
+            
+            var product2 = new Product
+            {
+                Id = 2,
+                ArticleNumber = "Article12",
+                Title = "Sample Product",
+                ShortDescription = "Sample description",
+                Description = "Sample Product",
+                ImageUrl = "www.Sample-Product.fr",
+                InCarousel = false,
+                Price = 10,
+                Labels = new List<Label> {},
+                Stocks = []
+            };
+            
+            _context.Products.Add(product1);
+            _context.Products.Add(product2);
+            await _context.SaveChangesAsync();
+            
+            // Act
+            var result = await _controller.GetProductsByCarousel(true);
+            
+            Assert.That(result.Value, Is.Not.Null);
+            Assert.That(result.Value.Count, Is.EqualTo(1));
+            
+            Assert.That(result, Is.InstanceOf<ActionResult<IEnumerable<ProductDTO>>>());
+
+            var returnedProduct = result.Value.FirstOrDefault();
+            Assert.That(returnedProduct, Is.Not.Null);
+            Assert.That(returnedProduct.Id, Is.EqualTo(product1.Id));
+            Assert.That(returnedProduct.InCarousel, Is.EqualTo(product1.InCarousel));
+            
+        }
+        
+        //Made by Thea
+        [Test]
+        public async Task GetProduct_ByCarousel_ReturnsProductNotFound()
+        {
+            
+            var inCarousel = true;
+            
+            var product1 = new Product
+            {
+                Id = 1,
+                ArticleNumber = "Article12",
+                Title = "Sample Product",
+                ShortDescription = "Sample description",
+                Description = "Sample Product",
+                ImageUrl = "www.Sample-Product.fr",
+                InCarousel = false,
+                Price = 10,
+                Labels = new List<Label> {},
+                Stocks = []
+            };
+            
+            _context.Products.Add(product1);
+            await _context.SaveChangesAsync();
+            
+            // Act
+            var result = await _controller.GetProductsByCarousel(inCarousel);
+            
+            Assert.That(result.Value, Is.Null);
+            
+            Assert.That(result, Is.InstanceOf<ActionResult<IEnumerable<ProductDTO>>>());
+
+            // Checks that the result.Result is an instance of NotFoundObjectResult
+            Assert.That(result.Result, Is.InstanceOf<NotFoundObjectResult>());
+            
+            var notFoundResult = result.Result as NotFoundObjectResult;
+            Assert.That(notFoundResult, Is.Not.Null);
+            
+            //notFoundResult.Value is the response body
+            Assert.That(notFoundResult.Value, Is.EqualTo($"Product not found with InCarousel: '{inCarousel}'"));
+
+        }
     }
 }
