@@ -3,6 +3,7 @@ using BE_Hovedopgave_2024_2025.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BE_Hovedopgave_2024_2025.Migrations
 {
     [DbContext(typeof(OdontologicDbContext))]
-    partial class OdontologicDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241202085413_AddArticleNumberProperty")]
+    partial class AddArticleNumberProperty
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -75,9 +78,6 @@ namespace BE_Hovedopgave_2024_2025.Migrations
                     b.Property<string>("ImageUrl")
                         .IsRequired()
                         .HasColumnType("longtext");
-
-                    b.Property<bool>("InCarousel")
-                        .HasColumnType("tinyint(1)");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(65,30)");

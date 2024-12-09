@@ -64,4 +64,17 @@ public class ProductController : ControllerBase
 
         return productDTOs;
     }
+    
+    [HttpGet("incarousel/{inCarousel}")]
+    public async Task<ActionResult<IEnumerable<ProductDTO?>>> GetProductsByCarousel(bool inCarousel)
+    {
+
+        var productDTOs = await _productService.GetProductDTOsByCarousel(inCarousel);
+        if (productDTOs.Count == 0)
+        {
+            return NotFound($"Product not found with InCarousel: '{inCarousel}'");
+        }
+
+        return productDTOs;
+    }
 }
