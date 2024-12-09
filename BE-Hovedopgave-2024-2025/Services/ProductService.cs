@@ -100,4 +100,20 @@ public class ProductService : IProductService
         return productDTOs;
     }
 
+    public async Task<List<ProductDTO>> GetProductDTOsByName(string name)
+    {
+        var searchProducts = await _context.Products
+            .Where(p => p.Title.ToLower().Contains(name.ToLower()))
+            .ToListAsync();
+        
+        var productDTOs = new List<ProductDTO>();
+        foreach (var product in searchProducts)
+        {
+            var productDTO = ConvertToProductDTO(product);
+            productDTOs.Add(productDTO);
+        }
+
+        return productDTOs;
+    }
+
 }
