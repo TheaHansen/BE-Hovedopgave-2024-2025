@@ -77,4 +77,21 @@ public class ProductController : ControllerBase
 
         return productDTOs;
     }
+
+    [HttpGet("search")]
+    public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProductsBySearch([FromQuery] string name)
+    {
+        if (string.IsNullOrEmpty(name))
+        {
+            return NotFound("Search string is empty");
+        }
+
+        var productDTOs = await _productService.GetProductDTOsByName(name);
+        if (productDTOs.Count == 0)
+        {
+            return NotFound($"Product not found with name: '{name}'");
+        }
+        
+        return productDTOs;
+    }
 }
