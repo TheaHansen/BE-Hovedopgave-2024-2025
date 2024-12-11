@@ -87,7 +87,10 @@ public class ProductService : IProductService
 
     public async Task<List<ProductDTO>> GetProductDTOsByCarousel(bool carousel)
     {
-        var carouselProducts = await _context.Products.Include(p => p.Stocks).Where(product => product.InCarousel == carousel).ToListAsync();
+        var carouselProducts = await _context.Products
+            .Include(p => p.Stocks)
+            .Where(product => product.InCarousel == carousel)
+            .ToListAsync();
         
         var productDTOs = new List<ProductDTO>();
         
@@ -103,6 +106,7 @@ public class ProductService : IProductService
     public async Task<List<ProductDTO>> GetProductDTOsByName(string name)
     {
         var searchProducts = await _context.Products
+            .Include(p => p.Stocks)
             .Where(p => p.Title.ToLower().Contains(name.ToLower()))
             .ToListAsync();
         
