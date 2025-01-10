@@ -9,7 +9,6 @@ public class MappingProfile : Profile
     public MappingProfile()
     {
         CreateMap<Product, ProductDTO>();
-        //.ForMember(dest => dest.StockStatus, opt => opt.Ignore());
         
         CreateMap<Label, LabelDTO>();
     }

@@ -7,7 +7,6 @@ using BE_Hovedopgave_2024_2025.DTOs;
 using BE_Hovedopgave_2024_2025.Profiles;
 using BE_Hovedopgave_2024_2025.Services;
 
-//Setup and teardown are made together
 namespace NUnitTest
 {
     [TestFixture]
@@ -53,8 +52,7 @@ namespace NUnitTest
         {
            _context?.Dispose();
         }
-
-        //Made together
+        
         [Test]
         public async Task GetProduct_ProductExists_ReturnsProduct()
         {
@@ -93,7 +91,6 @@ namespace NUnitTest
             Assert.That(product.Title, Is.EqualTo(result.Value.Title));
         }
         
-        //Made together
         [Test]
         public async Task GetProduct_ProductDoesNotExist_ReturnsNotFound()
         {
@@ -118,7 +115,6 @@ namespace NUnitTest
             Assert.That(notFoundResult.Value, Is.EqualTo("Product not found"));
         }
         
-        //Made together
         [Test]
         public async Task GetProduct_ByLabel_ReturnsProducts()
         {
@@ -176,8 +172,6 @@ namespace NUnitTest
 
         }
         
-        
-        //Made together
         [Test]
         public async Task GetProduct_ByLabel_ReturnsProductNotFound()
         {
@@ -222,8 +216,6 @@ namespace NUnitTest
 
         }
         
-        
-        //Made together
         [Test]
         public async Task GetProduct_ByLabel_ReturnsLabelNotFound()
         {
@@ -267,8 +259,6 @@ namespace NUnitTest
 
         }
         
-        
-        //Made by Thea
         [Test]
         public async Task GetProduct_ByCarousel_ReturnsProducts()
         {
@@ -321,7 +311,6 @@ namespace NUnitTest
             
         }
         
-        //Made by Thea
         [Test]
         public async Task GetProduct_ByCarousel_ReturnsProductNotFound()
         {

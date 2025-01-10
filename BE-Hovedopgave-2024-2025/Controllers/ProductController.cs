@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BE_Hovedopgave_2024_2025.Controllers;
 
-//Made together
 [Route("api/products")]
 [ApiController]
 public class ProductController : ControllerBase
